@@ -35,12 +35,7 @@ addons:
     - lmodern # latex package
     - texlive-generic-extra
 install:
-    - wget https://github.com/jgm/pandoc/releases/download/2.7/pandoc-2.7-1-amd64.deb && sudo dpkg -i pandoc-2.7-1-amd64.deb
-    - pip install --upgrade setuptools pip pytest
-    - pip install -f travis-wheels/wheelhouse . codecov coverage
-    - pip install nbconvert[execute,serve,test]
-    - pip install check-manifest
-    - python -m ipykernel.kernelspec --user
+    - if [[ "${TRAVIS_CPU_ARCH}" == "ppc64le" ]]; then sudo apt-get -y install pandoc; else wget https://github.com/jgm/pandoc/releases/download/2.7/pandoc-2.7-1-amd64.deb && sudo dpkg -i pandoc-2.7-1-amd64.deb; pip install --upgrade setuptools pip pytest; pip install -f travis-wheels/wheelhouse . codecov coverage; pip install nbconvert[execute,serve,test]; pip install check-manifest; python -m ipykernel.kernelspec --user; fi
 script:
     - check-manifest --ignore "share/**"
     # cd so we test the install, not the repo
